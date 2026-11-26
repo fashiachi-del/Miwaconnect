@@ -102,11 +102,15 @@ Most shared plans disable cPanel Terminal, so `next build` is launched from
 the **Run JS script** button instead:
 
 1. Upload or pull `build.js` into the application root.
-2. Node.js App panel → **Run JS script** → enter `build.js`.
+2. Node.js App panel → **Run JS script** → choose **`build:cpanel`**.
 3. Wait for `Build complete`, then press **Restart**.
 
-`build.js` installs the build-only dependencies with `--include=dev` when they
-are absent, runs `next build`, and exits non-zero on failure. The output appears
+The dialog lists scripts from `package.json` only, so `build.js` is exposed as
+`npm run build:cpanel`. Selecting `build` runs plain `next build` and skips the
+dependency check.
+
+`build:cpanel` installs the build-only dependencies with `--include=dev` when
+they are absent, runs `next build`, and exits non-zero on failure. The output appears
 in the same log panel as the start command, which is where `No production build
 found` comes from.
 

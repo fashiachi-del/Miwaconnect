@@ -205,9 +205,9 @@ into the price API or vice versa — that separation is deliberate.
 
 | File | Role |
 | --- | --- |
-| `package.json` | Scripts (`dev`, `build`, `start`, `lint`, `db:setup`, `prices:test`) and the five runtime deps (`next`, `react`, `react-dom`, `@neondatabase/serverless`). |
+| `package.json` | Scripts (`dev`, `build`, `build:cpanel`, `start`, `lint`, `db:setup`, `prices:test`) and the five runtime deps (`next`, `react`, `react-dom`, `@neondatabase/serverless`). |
 | `next.config.ts` | Enables `cacheComponents`, `partialPrefetching`, and the Tailwind Turbopack rule for `*.css`. Changing cache config here affects how `page.tsx` and both routes behave. |
-| `build.js` | Runs `next build` (and installs dev dependencies if missing) from cPanel's **Run JS script** button. Not used in local development. |
+| `build.js` | Runs `next build` (and installs dev dependencies if missing). Exposed as `npm run build:cpanel` for cPanel's **Run JS script** dialog, which only lists package scripts. Not used in local development. |
 | `server.js` | CommonJS entry point for cPanel/Phusion Passenger. Loads the production build, fails fast with a clear log when `.next/BUILD_ID` is missing or the port is invalid, and listens on `process.env.PORT`. Used by `npm start`; not used by `npm run dev`. |
 | `tsconfig.json` | Strict TS, `allowJs` (for `.mjs`), `@/*` → repo root, includes `.next/types`. `exclude: node_modules`. |
 | `eslint.config.mjs` | Flat config extending `eslint-config-next`. `npm run lint` runs `eslint` with no path, which lints the project per this file. |

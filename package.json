@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:cpanel": "node build.js",
     "start": "node server.js",
     "lint": "eslint",
     "db:setup": "node scripts/setup-db.mjs",
