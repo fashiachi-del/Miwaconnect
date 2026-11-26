@@ -206,7 +206,7 @@ into the price API or vice versa — that separation is deliberate.
 | --- | --- |
 | `package.json` | Scripts (`dev`, `build`, `start`, `lint`, `db:setup`, `prices:test`) and the five runtime deps (`next`, `react`, `react-dom`, `@neondatabase/serverless`). |
 | `next.config.ts` | Enables `cacheComponents`, `partialPrefetching`, and the Tailwind Turbopack rule for `*.css`. Changing cache config here affects how `page.tsx` and both routes behave. |
-| `server.js` | CommonJS entry point for cPanel/Phusion Passenger. Loads the production build, fails fast with a clear log when `.next/BUILD_ID` is missing or the port is invalid, and listens on `process.env.PORT`. Not used by `npm run dev` or `npm start`. |
+| `server.js` | CommonJS entry point for cPanel/Phusion Passenger. Loads the production build, fails fast with a clear log when `.next/BUILD_ID` is missing or the port is invalid, and listens on `process.env.PORT`. Used by `npm start`; not used by `npm run dev`. |
 | `tsconfig.json` | Strict TS, `allowJs` (for `.mjs`), `@/*` → repo root, includes `.next/types`. `exclude: node_modules`. |
 | `eslint.config.mjs` | Flat config extending `eslint-config-next`. `npm run lint` runs `eslint` with no path, which lints the project per this file. |
 | `AGENTS.md` | Next.js-generated agent instructions; re-added by `next dev`. Not application code. |
@@ -422,7 +422,7 @@ silently degrades to a 1 ms loop above that limit.
 | --- | --- |
 | `npm run dev` | Next dev server on :3000 (Turbopack). Also regenerates `AGENTS.md`. |
 | `npm run build` | Production build + TypeScript check. |
-| `npm start` | Serve the production build. |
+| `npm start` | Serve the production build through `server.js` (the cPanel entry point). |
 | `npm run lint` | ESLint over the project. |
 | `npm run db:setup` | Apply `db/schema.sql` to `DATABASE_URL` (idempotent). |
 | `npm run prices:test` | 16 Node tests for parser and cache. |

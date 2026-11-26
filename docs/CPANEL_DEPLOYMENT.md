@@ -28,11 +28,24 @@ cPanel → **Setup Node.js App** → **Create Application**:
 | --- | --- |
 | Node.js version | 20.x or 22.x |
 | Application mode | Production |
-| Application root | `miwaconnect` (i.e. `/home/<cpanel-user>/miwaconnect`) |
+| Application root | `miwaconnect` (i.e. `/home/<cpanel-user>/miwaconnect`; an existing root such as `miwaconnect.atihhub.com` is fine) |
 | Application URL | `miwaconnect.atihhub.com` |
-| Application startup file | `server.js` |
+| Application startup file | `server.js` — **not** `npm start` or `next start` |
 
 Do **not** set `PORT`. Passenger provides it through the environment.
+
+### The Node.js version matters
+
+cPanel accounts often default to an old runtime. If the version dropdown
+shows **Node.js 10, 12 or 14**, the app cannot run: Next.js 16 needs **20.9+**.
+The symptom is a crash from `next start` before your code loads:
+
+```text
+SyntaxError: Unexpected token ?
+```
+
+If no 20.x/22.x option exists, ask the host to install Node.js 20 LTS. Changing
+files or reinstalling dependencies will not fix a Node 10 runtime.
 
 ## 2. Put the code in the application root
 
@@ -65,11 +78,16 @@ Use **Run JS script** in the Node.js App panel, or the cPanel Terminal:
 
 ```bash
 cd ~/miwaconnect
+source /home/<cpanel-user>/nodevenv/<app-root>/20/bin/activate
+node -v                     # must print v20.x or newer
+rm -rf node_modules .next   # if the app was previously installed on Node 10
 npm install --include=dev   # Tailwind and TypeScript are devDependencies
 npm run build
 ```
 
-Then press **Restart** in the Node.js App panel.
+Use the exact virtualenv path shown in the Node.js App panel. Then press
+**Restart**. `server.js` refuses to serve a missing or stale build rather than
+leaving Passenger with a dead process.
 
 `server.js` checks for `.next/BUILD_ID` and exits with a clear message instead
 of leaving Passenger with a dead process:
@@ -100,6 +118,8 @@ stopped or misconfigured.
 | `No production build found` | `npm run build` was not run in the app root, or it failed. |
 | Build fails on Tailwind/TypeScript | `npm install` ran with production-only deps. Use `npm install --include=dev`. |
 | `Unsupported Node.js version` | Select Node 20+ in the app settings. |
+| `SyntaxError: Unexpected token ?` from `next start` | The app is running Node 10/12/14. Switch the Node.js version to 20+, then reinstall and rebuild. |
+| npm warns about a mismatched `node` binary | cPanel is mixing the app virtualenv with the system Node. Activate the virtualenv (step 4) before running npm. |
 | Portal 500 but landing page loads | `DATABASE_URL` is missing or wrong; the landing page degrades, the portal needs the DB. |
 | App starts then stops immediately | Wrong application root, or `PORT` manually overridden. |
 | DNS points somewhere else | The subdomain's A record must target the server that runs the app. |

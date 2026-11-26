@@ -2,10 +2,13 @@
   "name": "miwaconnect",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "node server.js",
     "lint": "eslint",
     "db:setup": "node scripts/setup-db.mjs",
     "prices:test": "node --test lib/sugar-prices/parse.test.mjs lib/sugar-prices/cache.test.mjs"
