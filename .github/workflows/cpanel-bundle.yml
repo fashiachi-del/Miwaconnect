@@ -1,0 +1,40 @@
+name: Build cPanel bundle
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Assemble standalone bundle
+        run: |
+          mkdir -p bundle
+          cp -r .next/standalone/. bundle/
+          mkdir -p bundle/.next
+          cp -r .next/static bundle/.next/static
+          cp -r public bundle/public
+          test -f bundle/server.js
+          test -d bundle/node_modules
+          test -d bundle/.next/static
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: miwaconnect-cpanel
+          path: bundle
+          retention-days: 30

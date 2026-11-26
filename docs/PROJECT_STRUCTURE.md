@@ -93,6 +93,7 @@ miwaconnect/
 ├─ next.config.ts                # cacheComponents, partialPrefetching, Tailwind
 ├─ server.js                     # cPanel Passenger entry point (CommonJS)
 ├─ build.js                      # production build runner for cPanel's UI (no terminal)
+├─ .github/workflows/            # cpanel-bundle.yml: builds the standalone cPanel ZIP
 ├─ tsconfig.json                 # strict, "@/*" → repo root, allowJs
 ├─ eslint.config.mjs             # eslint-config-next
 ├─ package.json                  # scripts + deps
@@ -206,7 +207,7 @@ into the price API or vice versa — that separation is deliberate.
 | File | Role |
 | --- | --- |
 | `package.json` | Scripts (`dev`, `build`, `build:cpanel`, `start`, `lint`, `db:setup`, `prices:test`) and the five runtime deps (`next`, `react`, `react-dom`, `@neondatabase/serverless`). |
-| `next.config.ts` | Enables `cacheComponents`, `partialPrefetching`, and the Tailwind Turbopack rule for `*.css`. Changing cache config here affects how `page.tsx` and both routes behave. |
+| `next.config.ts` | Enables `cacheComponents`, `partialPrefetching`, `output: "standalone"` (for the cPanel bundle), and the Tailwind Turbopack rule for `*.css`. Changing cache config here affects how `page.tsx` and both routes behave. |
 | `build.js` | Runs `next build` (and installs dev dependencies if missing). Exposed as `npm run build:cpanel` for cPanel's **Run JS script** dialog, which only lists package scripts. Not used in local development. |
 | `server.js` | CommonJS entry point for cPanel/Phusion Passenger. Loads the production build, fails fast with a clear log when `.next/BUILD_ID` is missing or the port is invalid, and listens on `process.env.PORT`. Used by `npm start`; not used by `npm run dev`. |
 | `tsconfig.json` | Strict TS, `allowJs` (for `.mjs`), `@/*` → repo root, includes `.next/types`. `exclude: node_modules`. |

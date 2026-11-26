@@ -17,8 +17,6 @@ need a running Node process.
 > If **Setup Node.js App** is missing from cPanel, the host has not installed
 > the Node.js Selector. "Application Manager" alone is not enough to manage a
 > Node app. Ask support to enable Node.js hosting, or deploy elsewhere.
-> On the current Truehost account this module is **not installed**, which is why
-> the subdomain returns 503.
 
 ## 1. Create the application
 
@@ -95,6 +93,23 @@ of leaving Passenger with a dead process:
 ```text
 No production build found (.next/BUILD_ID is missing).
 ```
+
+## Shared hosting with too little RAM
+
+A build killed with `memory allocation of ... failed` and exit code `-6` hit the
+account's memory limit. Next's compiler needs roughly 1-2 GB; no script change
+fixes that. Build on GitHub instead and upload the result:
+
+1. Push to `master` (or run **Actions → Build cPanel bundle → Run workflow**).
+2. Open the finished run and download the **miwaconnect-cpanel** artifact (a ZIP).
+3. In File Manager, create `miwaconnect.atihhub.com/runtime` and extract the ZIP
+   there. It contains `server.js`, `node_modules`, `.next` and `public`.
+4. Node.js App → **Application root** → `miwaconnect.atihhub.com/runtime`,
+   **Application startup file** → `server.js`, save.
+5. Set the environment variables, then **Restart**.
+
+The bundle is built on Linux with `output: "standalone"`, so it needs no
+`npm install` or `next build` on the server. Each new push rebuilds the artifact.
 
 ## Building without a terminal
 
