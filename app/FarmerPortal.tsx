@@ -27,7 +27,7 @@ export default function FarmerPortal({ initialData }: { initialData: AppData }) 
     const res = await registerOrLoginFarmer(formData);
     if ('farmer' in res) {
       setAuthError('');
-      router.push(`/?phone=${encodeURIComponent(res.farmer.phone_number)}`);
+      router.push(`/portal?phone=${encodeURIComponent(res.farmer.phone_number)}`);
       return;
     }
     setAuthError(res.error);
@@ -38,12 +38,12 @@ export default function FarmerPortal({ initialData }: { initialData: AppData }) 
       {/* Header */}
       <header className="bg-emerald-800 text-white p-4 shadow">
         <div className="max-w-3xl mx-auto flex justify-between items-center">
-          <div>
-            <h1 className="text-xl font-bold">MiwaConnect Kenya</h1>
+          <Link href="/" className="group">
+            <h1 className="text-xl font-bold group-hover:text-amber-200">MiwaConnect Kenya</h1>
             <p className="text-xs text-emerald-200">
               Compare Cane Prices, Book Factory Trucks &amp; Track Deductions
             </p>
-          </div>
+          </Link>
           {farmer ? (
             <div className="text-right text-xs">
               <span className="bg-emerald-950 px-2 py-1 rounded font-mono">{farmer.farmer_id}</span>

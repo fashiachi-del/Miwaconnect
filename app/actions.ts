@@ -105,7 +105,7 @@ export async function registerOrLoginFarmer(
     RETURNING *
   `) as Farmer[];
 
-  revalidatePath('/');
+  revalidatePath('/portal');
   return { farmer: inserted[0] };
 }
 
@@ -121,7 +121,7 @@ export async function createBooking(formData: FormData): Promise<void> {
     INSERT INTO harvest_bookings (farmer_id, factory_id, est_tonnage, harvest_date, distance_band, need_cutters, use_factory_transport)
     VALUES (${farmerId}, ${factoryId}, ${estTonnage}, ${harvestDate}, ${distanceBand}, ${needCutters}, TRUE)
   `;
-  revalidatePath('/');
+  revalidatePath('/portal');
 }
 
 // --- ADMIN / CLERK ACTIONS ---
@@ -164,6 +164,7 @@ export async function updateFactoryPrice(formData: FormData): Promise<void> {
     WHERE factory_id = ${factoryId}
   `;
   revalidatePath('/admin');
+  revalidatePath('/portal');
   revalidatePath('/');
 }
 
@@ -202,5 +203,6 @@ export async function logWeighbridgeAndPayout(formData: FormData): Promise<void>
   `;
 
   revalidatePath('/admin');
+  revalidatePath('/portal');
   revalidatePath('/');
 }

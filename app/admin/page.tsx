@@ -49,9 +49,14 @@ async function AdminDashboard({
           <h1 className="text-2xl font-bold text-emerald-900">
             MiwaConnect — Clerk &amp; Price Control Panel
           </h1>
-          <Link href="/" className="text-sm text-emerald-700 underline">
-            ← Farmer View
-          </Link>
+          <div className="flex items-center gap-4 text-sm">
+            <Link href="/" className="text-emerald-700 underline">
+              ← Home
+            </Link>
+            <Link href="/portal" className="text-emerald-700 underline">
+              Farmer View
+            </Link>
+          </div>
         </header>
 
         {/* SECTION 1: UPDATE FACTORY PRICES & QUEUES */}
