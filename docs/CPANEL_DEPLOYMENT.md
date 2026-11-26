@@ -96,6 +96,29 @@ of leaving Passenger with a dead process:
 No production build found (.next/BUILD_ID is missing).
 ```
 
+## Building without a terminal
+
+Most shared plans disable cPanel Terminal, so `next build` is launched from
+the **Run JS script** button instead:
+
+1. Upload or pull `build.js` into the application root.
+2. Node.js App panel → **Run JS script** → enter `build.js`.
+3. Wait for `Build complete`, then press **Restart**.
+
+`build.js` installs the build-only dependencies with `--include=dev` when they
+are absent, runs `next build`, and exits non-zero on failure. The output appears
+in the same log panel as the start command, which is where `No production build
+found` comes from.
+
+If the button is unavailable, add a one-off cron job instead:
+
+```sh
+cd /home/<cpanel-user>/<app-root> && . /home/<cpanel-user>/nodevenv/<app-root>/24/bin/activate && npm install --include=dev && npm run build > build.log 2>&1
+```
+
+Run it once, wait a few minutes, delete the cron job, then check `build.log` in
+File Manager.
+
 ## 5. SSL and verification
 
 - Run **SSL/TLS Status → Run AutoSSL** after DNS resolves.
