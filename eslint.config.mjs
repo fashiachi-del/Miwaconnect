@@ -8,7 +8,7 @@ const eslintConfig = defineConfig([
   {
     // cPanel's Passenger entry point is loaded as CommonJS by Node, so
     // require() is correct there even though the rest of the app is ESM/TSX.
-    files: ["server.js", "build.js"],
+    files: ["server.js", "build.js", "scripts/cpanel-start.js"],
     rules: { "@typescript-eslint/no-require-imports": "off" },
   },
   // Override default ignores of eslint-config-next.

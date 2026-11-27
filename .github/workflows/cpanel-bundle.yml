@@ -29,12 +29,18 @@ jobs:
           mkdir -p bundle/.next
           cp -r .next/static bundle/.next/static
           cp -r public bundle/public
+          mv bundle/server.js bundle/next-server.js
+          cp scripts/cpanel-start.js bundle/server.js
           test -f bundle/server.js
+          test -f bundle/next-server.js
           test -d bundle/node_modules
           test -d bundle/.next/static
+          cd bundle
+          zip -qr ../miwaconnect-cpanel.zip .
+          unzip -l ../miwaconnect-cpanel.zip | head -20
 
       - uses: actions/upload-artifact@v4
         with:
           name: miwaconnect-cpanel
-          path: bundle
+          path: miwaconnect-cpanel.zip
           retention-days: 30

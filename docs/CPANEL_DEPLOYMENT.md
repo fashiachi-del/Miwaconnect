@@ -101,9 +101,13 @@ account's memory limit. Next's compiler needs roughly 1-2 GB; no script change
 fixes that. Build on GitHub instead and upload the result:
 
 1. Push to `master` (or run **Actions → Build cPanel bundle → Run workflow**).
-2. Open the finished run and download the **miwaconnect-cpanel** artifact (a ZIP).
+2. Open the finished run and download the **miwaconnect-cpanel** artifact
+   (`miwaconnect-cpanel.zip`).
 3. In File Manager, create `miwaconnect.atihhub.com/runtime` and extract the ZIP
-   there. It contains `server.js`, `node_modules`, `.next` and `public`.
+   there. It must produce `runtime/server.js`, `runtime/next-server.js`,
+   `runtime/node_modules`, `runtime/.next` and `runtime/public` directly.
+   `server.js` is a small wrapper that writes startup failures to
+   `runtime/boot.log`; open that file if the site returns 503.
 4. Node.js App → **Application root** → `miwaconnect.atihhub.com/runtime`,
    **Application startup file** → `server.js`, save.
 5. Set the environment variables, then **Restart**.
